@@ -7,7 +7,7 @@ from menu import Menu
 
 pygame.init()
 
-window = Window ('Cheeze of Wisdom')
+window = Window ('Wise Cheeze')
 
 
 # scenes
