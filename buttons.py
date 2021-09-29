@@ -8,7 +8,7 @@ from fonts import Fonts
 # base class
 class Button:
 
-    def __init__ (self, text_val='BUTTON', x=0, y=0, w=50, h=25, color='#FFFFFF', text_color='#000000'):
+    def __init__ (self, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
         
         self.kind = 'base'
         self.color = Color (color)
@@ -25,6 +25,7 @@ class Button:
         self.textWidth = Fonts.getSize (self.font, text_val) [0]
         self.textHeight = Fonts.getSize (self.font, text_val) [1]
         self.textSurface = self.font.render (text_val, True, self.textColor)
+        self.bindTextPosition()
 
 
     def draw (self, win_surface):
@@ -74,7 +75,7 @@ class Button:
 
 class CenteredButton (Button):
     
-    def __init__(self, text_val='BUTTON', x=0, y=0, w=50, h=25, color='#FFFFFF', text_color='#000000'):
+    def __init__(self, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
         super().__init__(text_val=text_val, x=x, y=y, w=w, h=h, color=color, text_color=text_color)
         self.kind ='centered'
         self.position.x = WIDTH // 2 - self.width // 2
@@ -85,7 +86,7 @@ class CenteredButton (Button):
 
 class CenteredRoundedButton (CenteredButton):
 
-    def __init__(self, radius, text_val='BUTTON', x=0, y=0, w=50, h=25, color='#FFFFFF', text_color='#000000'):
+    def __init__(self, radius, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
         super().__init__(text_val=text_val, x=x, y=y, w=w, h=h, color=color, text_color=text_color)
         self.kind = 'centered_rounded'
         self.radius = radius
