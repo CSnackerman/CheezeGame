@@ -1,4 +1,4 @@
-from buttons import Button, CenteredButton, CenteredRoundedButton, ExitButton
+from buttons import CenteredRoundedButton, ExitButton
 from utility import *
 
 class Menu:
