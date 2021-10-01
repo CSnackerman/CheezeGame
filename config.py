@@ -9,3 +9,6 @@ HEIGHT = 600
 
 # WIDTH = 640
 # HEIGHT = 480
+
+
+FRAME_CAP = 30
