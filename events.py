@@ -1,7 +1,7 @@
 from sys import exit
 
 from pygame import quit
-from pygame.event import get
+from pygame.event import get, post, Event
 from pygame.locals import *
 
 from keyboard import Keyboard
@@ -23,3 +23,7 @@ class EventHandler:
             Mouse.handleEvents(e)
 
         Keyboard.handlePressed()
+
+    @staticmethod
+    def postQuit ():
+        post (Event(QUIT))

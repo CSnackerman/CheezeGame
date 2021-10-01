@@ -1,5 +1,6 @@
 from buttons import CenteredRoundedTextButton, ExitButton
 from utility import *
+from events import EventHandler
 
 class Menu:
 
@@ -52,7 +53,8 @@ class Menu:
         print ('clicked settings')
 
     def clickExitCallback():
-        print ('clicked exit')
+        EventHandler.postQuit()
+
 
     
     
