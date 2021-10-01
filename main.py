@@ -6,7 +6,7 @@ from menu import Menu
 
 # --- Setup ---
 pygame.init()
-window = Window ('Wise Cheeze')
+window = Window ('Wize Cheeze')
 
 # scenes
 menu = Menu()
