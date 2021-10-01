@@ -1,4 +1,4 @@
-from pygame import Rect, Color
+from pygame import Rect, Color, init
 from pygame import Vector2
 import pygame.draw
 
@@ -7,49 +7,30 @@ from fonts import Fonts
 from utility import *
 from math import pi, sin, cos
 
-# base class
+# --- Base Button ---
+
 class Button:
 
-    def __init__ (self, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
+    def __init__ (self, x, y, w, h, bgcolor, fgcolor):
         
-        self.kind = 'base'
-        self.color = Color (color)
+        self.kind = 'base_button'
         self.position = Vector2 (x, y)
+        self.center = Vector2 (x + w // 2, y + h // 2)
         self.width = w
         self.height = h
-        
         self.rect = Rect (x, y, w, h)
-
-        self.font = Fonts.getButtonFont()
-        self.textVal = text_val
-        self.textColor = text_color
-        self.textPosition = Vector2 (x, y)
-        self.textWidth = Fonts.getSize (self.font, text_val) [0]
-        self.textHeight = Fonts.getSize (self.font, text_val) [1]
-        self.textSurface = self.font.render (text_val, True, self.textColor)
-        self.bindTextPosition()
+        self.bgColor = Color (bgcolor)
+        self.fgColor = Color (fgcolor)
 
 
     def draw (self, win_surface):
         self.drawRect (win_surface)
-        self.drawText (win_surface)
-
-
-    # utility
+        
+        
+    # button utility
 
     def drawRect (self, win_surface):
-        pygame.draw.rect (
-            win_surface,
-            self.color,
-            self.rect,
-        )
-
-    def drawText (self, win_surface):
-        win_surface.blit ( 
-            self.textSurface, 
-            (self.textPosition.x, self.textPosition.y)
-        )
-    
+        pygame.draw.rect (win_surface, self.bgColor, self.rect)
 
     def bindRect (self):
         self.rect = Rect (
@@ -57,7 +38,37 @@ class Button:
             self.width, self.height
         )
 
-    def bindTextPosition (self):
+
+# --- Rectangular Buttons    
+
+class TextButton (Button):
+
+    def __init__(self, text, x, y, w, h, bgcolor, fgcolor):
+        super().__init__(x, y, w, h, bgcolor, fgcolor)
+
+        self.kind = 'text_button'
+        self.text = text
+        self.font = Fonts.getButtonFont()
+        self.textWidth = Fonts.getSize (self.font, text) [0]
+        self.textHeight = Fonts.getSize (self.font, text) [1]
+        self.textSurface = None
+        self.createTextSurface()
+        self.textPosition = None
+        self.centerTextPosition()
+        
+
+    def draw (self, win_surface):
+        self.drawRect (win_surface)
+        self.drawText (win_surface)
+
+
+    # text button utility
+
+    def drawText (self, win_surface):
+        text_position = (self.textPosition.x, self.textPosition.y)
+        win_surface.blit (self.textSurface, text_position)
+
+    def centerTextPosition (self):
         horizOffset = (self.width - self.textWidth) // 2
         vertOffset = (self.height - self.textHeight) // 2 
         posX = self.position.x + horizOffset
@@ -65,39 +76,35 @@ class Button:
         self.textPosition = Vector2 (posX, posY)
 
     def createTextSurface (self):
-        self.textSurface = self.font.render (self.textVal, True, self.textColor)
+        self.textSurface = self.font.render (self.text, True, self.fgColor)
 
-    def setTextColor (self, c):
-        self.textColor = Color (c)
-
-
-
-
-# concrete button implementations
-
-class CenteredButton (Button):
     
-    def __init__(self, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
-        super().__init__(text_val=text_val, x=x, y=y, w=w, h=h, color=color, text_color=text_color)
-        self.kind ='centered'
+
+class CenteredTextButton (TextButton):
+    
+    def __init__(self, text, x, y, w, h, bgcolor, fgcolor):
+        super().__init__(text, x, y, w, h, bgcolor, fgcolor)
+
+        self.kind ='centered_text_button'
         self.position.x = WIDTH // 2 - self.width // 2
         self.bindRect()
-        self.bindTextPosition()
+        self.centerTextPosition()
         self.createTextSurface()
 
 
-class CenteredRoundedButton (CenteredButton):
 
-    def __init__(self, radius, text_val='BUTTON', x=0, y=0, w=100, h=25, color='#FFFFFF', text_color='#000000'):
-        super().__init__(text_val=text_val, x=x, y=y, w=w, h=h, color=color, text_color=text_color)
-        self.kind = 'centered_rounded'
-        self.radius = radius
+class CenteredRoundedTextButton (CenteredTextButton):
+
+    def __init__(self, text, x, y, w, h, r, bgcolor, fgcolor):
+        super().__init__(text, x, y, w, h, bgcolor, fgcolor)
+        self.kind = 'centered_rounded_text_button'
+        self.radius = r
 
 
     def draw (self, win_surface):
         pygame.draw.rect (
             win_surface,
-            self.color,
+            self.bgColor,
             self.rect,
             border_radius=self.radius
         )
@@ -107,61 +114,49 @@ class CenteredRoundedButton (CenteredButton):
 
 
 
+# --- Circular Buttons ---
 
+class CircleButton (Button):
 
-class CircleButton:
+    def __init__(self, x, y, r, bgcolor, fgcolor):
+        super().__init__(x, y, r * 2, r * 2, bgcolor, fgcolor)
+        self.radius = r
 
-    def __init__ (self, text, x, y, radius, bgcolor, fgcolor):
-        
-        self.text = text
-        self.x = x
-        self.y = y
-        self.radius = radius
-        self.bgColor = Color (bgcolor)
-        self.fgColor = Color (fgcolor)
-        
-        self.hitbox = Rect (
-                        x - radius,
-                        y - radius,
-                        radius * 2,
-                        radius * 2
-                    )
 
     def draw (self, win_surface):
-        center = (self.x, self.y)
-        pygame.draw.circle (win_surface, self.bgColor, center, self.radius)
+        c = (self.center.x, self.center.y)
+        pygame.draw.circle (win_surface, self.bgColor, c, self.radius)
         
-
-
 
 
 class ExitButton (CircleButton):
 
-    def __init__(self, text, x, y, radius, bgcolor, fgcolor):
-        super().__init__(text, x, y, radius, bgcolor, fgcolor)
+    def __init__(self, x, y, r, bgcolor, fgcolor):
+        super().__init__(x, y, r, bgcolor, fgcolor)
 
         xRadius = self.radius - 10
+        cX = self.center.x
+        cY = self.center.y
 
         self.topright = Vector2 (
-                            self.x + xRadius * cos (pi / 4),
-                            self.y + xRadius * sin (pi / 4)
+                            cX + xRadius * cos (pi / 4),
+                            cY + xRadius * sin (pi / 4)
                         )
         self.topleft = Vector2 (
-                            self.x + xRadius * cos (3 * pi / 4),
-                            self.y + xRadius * sin (3 * pi / 4)
+                            cX + xRadius * cos (3 * pi / 4),
+                            cY + xRadius * sin (3 * pi / 4)
                         )
         self.botleft = Vector2 (
-                            self.x + xRadius * cos (5 * pi / 4),
-                            self.y + xRadius * sin (5 * pi / 4)
+                            cX + xRadius * cos (5 * pi / 4),
+                            cY + xRadius * sin (5 * pi / 4)
                         )
         self.botright = Vector2 (
-                            self.x + xRadius * cos (7 * pi / 4),
-                            self.y + xRadius * sin (7 * pi / 4)
+                            cX + xRadius * cos (7 * pi / 4),
+                            cY + xRadius * sin (7 * pi / 4)
                         )
+
 
     def draw (self, win_surface):
         super().draw (win_surface)
         pygame.draw.line (win_surface, self.fgColor, self.topleft, self.botright, 7)
         pygame.draw.line (win_surface, self.fgColor, self.botleft, self.topright, 7)
-        
-        
