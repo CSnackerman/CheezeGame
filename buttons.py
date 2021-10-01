@@ -5,6 +5,7 @@ import pygame.draw
 from config import *
 from fonts import Fonts
 from utility import *
+from mouse import Mouse
 from math import pi, sin, cos
 
 # --- Base Button ---
@@ -22,9 +23,15 @@ class Button:
         self.bgColor = Color (bgcolor)
         self.fgColor = Color (fgcolor)
 
+        self.clickListener = None
+
 
     def draw (self, win_surface):
         self.drawRect (win_surface)
+
+    def onClick (self):
+        if self.rect.collidepoint (Mouse.pos()):
+            self.clickListener()
         
         
     # button utility
@@ -37,6 +44,10 @@ class Button:
             self.position.x, self.position.y, 
             self.width, self.height
         )
+
+    def addClickListener (self, listener):
+        Mouse.addObserver (self)
+        self.clickListener = listener
 
 
 # --- Rectangular Buttons    

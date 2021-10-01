@@ -5,6 +5,7 @@ from pygame.event import get
 from pygame.locals import *
 
 from keyboard import Keyboard
+from mouse import Mouse
 
 class EventHandler:
     
@@ -19,5 +20,6 @@ class EventHandler:
                 exit()
 
             Keyboard.handleEvents (e)
+            Mouse.handleEvents(e)
 
         Keyboard.handlePressed()

@@ -33,8 +33,26 @@ class Menu:
                         )
         }
 
-    
-    def display (self, win_surf):
+        # add listeners
+        self.buttons ['start'].addClickListener (Menu.clickStartCallback)
+        self.buttons ['settings'].addClickListener (Menu.clickSettingsCallback)
+        self.buttons ['exit'].addClickListener (Menu.clickExitCallback)
 
+
+    def display (self, win_surf):
         for key in self.buttons:
             self.buttons[key].draw (win_surf)
+    
+
+    # listener callbacks
+    def clickStartCallback ():
+        print ('clicked start')
+
+    def clickSettingsCallback():
+        print ('clicked settings')
+
+    def clickExitCallback():
+        print ('clicked exit')
+
+    
+    
