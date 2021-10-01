@@ -3,9 +3,6 @@ from utility import *
 
 class Menu:
 
-    
-
-
     def __init__ (self):
 
         button_width = pcToPx_horiz (15)
