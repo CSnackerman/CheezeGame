@@ -4,7 +4,7 @@ from pygame.locals import DOUBLEBUF
 
 class Window:
 
-    bg_color = '#11bd11'
+    bg_color = '#c27919'
     resolution = (WIDTH, HEIGHT)
     flags = DOUBLEBUF
 
