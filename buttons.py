@@ -12,16 +12,20 @@ from math import pi, sin, cos
 
 class Button:
 
-    def __init__ (self, x, y, w, h, bgcolor, fgcolor):
+    def __init__ (self, x, y, w, h, bgcolor, fgcolor, hovercolor):
         
         self.kind = 'base_button'
         self.position = Vector2 (x, y)
         self.center = Vector2 (x + w // 2, y + h // 2)
         self.width = w
         self.height = h
+
         self.rect = Rect (x, y, w, h)
         self.bgColor = Color (bgcolor)
         self.fgColor = Color (fgcolor)
+        
+        self.hoverColor = Color (hovercolor)
+        self.isHovered = False
 
         self.clickListener = None
 
@@ -32,12 +36,23 @@ class Button:
     def onClick (self):
         if self.rect.collidepoint (Mouse.pos()):
             self.clickListener()
+
+    def onHover (self):
+        if self.rect.collidepoint (Mouse.pos()):
+            if not self.isHovered:
+                self.isHovered = True
+        elif self.isHovered:
+            self.isHovered = False
+        
         
         
     # button utility
 
     def drawRect (self, win_surface):
-        pygame.draw.rect (win_surface, self.bgColor, self.rect)
+        if not self.isHovered:
+            pygame.draw.rect (win_surface, self.bgColor, self.rect)
+        else:
+            pygame.draw.rect (win_surface, self.hoverColor, self.rect)
 
     def bindRect (self):
         self.rect = Rect (
@@ -54,8 +69,8 @@ class Button:
 
 class TextButton (Button):
 
-    def __init__(self, text, x, y, w, h, bgcolor, fgcolor):
-        super().__init__(x, y, w, h, bgcolor, fgcolor)
+    def __init__(self, text, x, y, w, h, bgcolor, fgcolor, hovercolor):
+        super().__init__(x, y, w, h, bgcolor, fgcolor, hovercolor)
 
         self.kind = 'text_button'
         self.text = text
@@ -93,8 +108,8 @@ class TextButton (Button):
 
 class CenteredTextButton (TextButton):
     
-    def __init__(self, text, x, y, w, h, bgcolor, fgcolor):
-        super().__init__(text, x, y, w, h, bgcolor, fgcolor)
+    def __init__(self, text, x, y, w, h, bgcolor, fgcolor, hovercolor):
+        super().__init__(text, x, y, w, h, bgcolor, fgcolor, hovercolor)
 
         self.kind ='centered_text_button'
         self.position.x = WIDTH // 2 - self.width // 2
@@ -106,20 +121,26 @@ class CenteredTextButton (TextButton):
 
 class CenteredRoundedTextButton (CenteredTextButton):
 
-    def __init__(self, text, x, y, w, h, r, bgcolor, fgcolor):
-        super().__init__(text, x, y, w, h, bgcolor, fgcolor)
+    def __init__(self, text, x, y, w, h, r, bgcolor, fgcolor, hovercolor):
+        super().__init__(text, x, y, w, h, bgcolor, fgcolor, hovercolor)
         self.kind = 'centered_rounded_text_button'
         self.radius = r
 
 
     def draw (self, win_surface):
-        pygame.draw.rect (
-            win_surface,
-            self.bgColor,
-            self.rect,
-            border_radius=self.radius
-        )
+
+        self.drawRoundedRect(win_surface)
         self.drawText (win_surface)
+
+    def drawRoundedRect (self, win_surface):
+        if not self.isHovered:
+            pygame.draw.rect (
+                win_surface, self.bgColor, self.rect, 0, self.radius
+            )
+        else:
+            pygame.draw.rect (
+                win_surface, self.hoverColor, self.rect, 0, self.radius
+            )
 
 
 
@@ -129,21 +150,24 @@ class CenteredRoundedTextButton (CenteredTextButton):
 
 class CircleButton (Button):
 
-    def __init__(self, x, y, r, bgcolor, fgcolor):
-        super().__init__(x, y, r * 2, r * 2, bgcolor, fgcolor)
+    def __init__(self, x, y, r, bgcolor, fgcolor, hovercolor):
+        super().__init__(x, y, r * 2, r * 2, bgcolor, fgcolor, hovercolor)
         self.radius = r
 
 
     def draw (self, win_surface):
         c = (self.center.x, self.center.y)
-        pygame.draw.circle (win_surface, self.bgColor, c, self.radius)
+        if not self.isHovered:
+            pygame.draw.circle (win_surface, self.bgColor, c, self.radius)
+        else:
+            pygame.draw.circle (win_surface, self.hoverColor, c, self.radius)
         
 
 
 class ExitButton (CircleButton):
 
-    def __init__(self, x, y, r, bgcolor, fgcolor):
-        super().__init__(x, y, r, bgcolor, fgcolor)
+    def __init__(self, x, y, r, bgcolor, fgcolor, hovercolor):
+        super().__init__(x, y, r, bgcolor, fgcolor, hovercolor)
 
         xRadius = self.radius - 10
         cX = self.center.x

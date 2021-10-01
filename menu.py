@@ -11,26 +11,29 @@ class Menu:
         rounded_radius = pcToPx_vert (5) 
         start_button_y = pcToPx_vert (70)
         settings_button_y = pcToPx_vert (85)
+        buttonFG = '#010f02'
+        buttonBG = '#d49f02'
+        buttonHoverColor = '#ffff2b'
 
         self.buttons = {
             'start':    CenteredRoundedTextButton (
                             'START',
                             0, start_button_y,
                             button_width, button_height, rounded_radius,
-                            '#FFFFFF', '#000000'
+                            buttonBG, buttonFG, buttonHoverColor
                         ),
 
             'settings': CenteredRoundedTextButton (
                             'SETTINGS',
                             0, settings_button_y,
                             button_width, button_height, rounded_radius,
-                            '#FFFFFF', '#000000'
+                            buttonBG, buttonFG, buttonHoverColor
                         ),
 
             'exit':     ExitButton (
                             WIDTH - 100, 50,
                             25,
-                            '#FFFFFF', '#000000'
+                            buttonBG, buttonFG, buttonHoverColor
                         )
         }
 

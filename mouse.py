@@ -16,11 +16,18 @@ class Mouse:
     def handleEvents (e):
         if e.type == MOUSEBUTTONDOWN:
             Mouse.handleMouseDown()
+        if e.type == MOUSEMOTION:
+            Mouse.handleMouseMove()
 
     @staticmethod
     def handleMouseDown ():
         for o in Mouse.observers:
             o.onClick()
+    
+    @staticmethod
+    def handleMouseMove ():
+        for o in Mouse.observers:
+            o.onHover()
 
     @staticmethod
     def addObserver (observer):
