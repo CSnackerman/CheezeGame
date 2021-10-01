@@ -27,7 +27,7 @@ class Menu:
                         ),
 
             'exit':     ExitButton (
-                            100, 100,
+                            WIDTH - 100, 50,
                             25,
                             '#FFFFFF', '#000000'
                         )
