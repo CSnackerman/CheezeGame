@@ -1,12 +1,44 @@
-from buttons import Button, CenteredButton, CenteredRoundedButton
+from buttons import Button, CenteredButton, CenteredRoundedButton, ExitButton
+from utility import *
 
 class Menu:
 
+    
+
+
     def __init__ (self):
+
+        button_width = pcToPx_horiz (15)
+        button_height = pcToPx_vert (7)
+        button_radius = pcToPx_vert (5) 
+        start_button_y = pcToPx_vert (70)
+        settings_button_y = pcToPx_vert (85)
+
         self.buttons = {
-            'default' : Button(),
-            'start'  :   CenteredButton (y=100, text_val='START', w=100, h=50),
-            'settings': CenteredRoundedButton (25, 'SETTINGS', 0, 200, 100, 50)
+            'start':    CenteredRoundedButton (
+                            button_radius, 
+                            'START', 
+                            0, 
+                            start_button_y, 
+                            button_width, 
+                            button_height
+                        ),
+
+            'settings': CenteredRoundedButton (
+                            button_radius, 
+                            'SETTINGS', 
+                            0, 
+                            settings_button_y, 
+                            button_width, 
+                            button_height
+                        ),
+
+            'exit':     ExitButton (
+                            '',
+                            100, 100,
+                            25,
+                            '#FFFFFF', '#000000'
+                        )
         }
 
     

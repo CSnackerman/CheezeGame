@@ -1,14 +1,16 @@
 import pygame.font
 from pygame.font import Font
 from pygame.font import SysFont
+from utility import *
 
 class Fonts:
 
     # factory methods
+    fontsize = 8 + pcToPx_horiz (1)
 
     @staticmethod
     def getButtonFont ():
-        return SysFont ('ubuntu', 17, True, False)
+        return SysFont ('ubuntu', Fonts.fontsize, True, False)
 
     # utility
     @staticmethod
