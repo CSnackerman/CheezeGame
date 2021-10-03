@@ -8,12 +8,12 @@ class Time:
     dt = 0
     fps = '0'
     accumulator = 0
-    fpsCalcInterval = 250
+    fpsCalcInterval = 0.250 # seconds
 
     @staticmethod
     def handleTime():
         Time.wait (WAIT_TIME)
-        Time.dt = Time.tick()
+        Time.dt = Time.tick() / 1000.0
         Time.accumulator += Time.dt
         Time.calculateFPS ()
 
