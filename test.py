@@ -1,47 +1,30 @@
 import pygame
 
 from config import HEIGHT
-from buttons import Button, CenteredButton, CenteredRoundedButton
 
 from window import Window
+from timez import Time
 from events import EventHandler
+from image import Image
 
 pygame.init()
 
-def test_Button():
+def test_Image():
     window = Window ('TEST CenteredButton')
-    b = Button()
+    img = Image ('cheeze.png', 50, 50, 200, 200)
+    
     while 1:
+        Time.handleTime()
         EventHandler.pollEvents()
         window.clear()
-        b.draw (window.surface)
+        img.draw (window.surface)
         window.update()
 
-def test_CenteredButton ():
-    window = Window ('TEST CenteredButton')
-    cb = CenteredButton ('centered', 0, 100, w=100)
-    while 1:
-        EventHandler.pollEvents()
-        window.clear()
-        cb.draw (window.surface)
-        window.update()
-
-
-def test_CenteredRoundedButton ():
-    window = Window ('TEST CenteredRoundedButton')
-    crb = CenteredRoundedButton (25, 'rounded', 0, 50, w=100)
-    while 1:
-        EventHandler.pollEvents()
-        window.clear()
-        crb.draw (window.surface)
-        window.update()
 
 
 # choose a test to run by uncommenting
 
-test_Button()
-# test_CenteredButton()
-# test_CenteredRoundedButton()
+test_Image()
 
 
 
