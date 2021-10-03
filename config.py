@@ -11,4 +11,5 @@ WIDTH = 640
 HEIGHT = 480
 
 
+WAIT_TIME = 3 # ms
 FRAME_CAP = 30

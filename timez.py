@@ -1,5 +1,5 @@
 import pygame.time
-from config import FRAME_CAP
+from config import FRAME_CAP, WAIT_TIME
 from math import floor
 
 class Time:
@@ -12,7 +12,7 @@ class Time:
 
     @staticmethod
     def handleTime():
-        Time.wait (3)
+        Time.wait (WAIT_TIME)
         Time.dt = Time.tick()
         Time.accumulator += Time.dt
         Time.calculateFPS ()
