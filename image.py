@@ -2,6 +2,8 @@ import pygame.image
 import pygame.transform
 from os import path
 
+from timez import Time
+
 class Image:
 
     def __init__ (self, filename, x, y, w, h):
@@ -17,4 +19,8 @@ class Image:
 
     def draw (self, win_surface):
         win_surface.blit (self.surface, (self.x, self.y))
+
+    def move (self, dx, dy):
+        self.x += dx * Time.dt
+        self.y += dy * Time.dt
 
