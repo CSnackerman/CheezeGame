@@ -12,8 +12,6 @@ class Image:
         self.w = w
         self.h = h
 
-        self.scrollX = 0
-
         self.surface = pygame.image.load (self.filepath).convert_alpha()
         self.surface = pygame.transform.scale (self.surface, (self.w, self.h))
 
