@@ -61,14 +61,9 @@ class Banner:
         
     def scrollItems (self):
         for item in self.items:
-
-            if self.totalItemWidth < self.w:
-                if item.x + item.w > self.w:
-                    item.moveTo (-item.w, item.y)
-
-            else:
-                if item.x + item.w > self.totalItemWidth:
-                    item.moveTo (-item.w, item.y)
+            if item.x > self.totalItemWidth:
+                print (item.x + item.w, self.totalItemWidth)
+                item.moveTo (-item.w, item.y)
                 
             item.move (Banner.scroll_speed, 0)
 

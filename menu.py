@@ -1,6 +1,9 @@
+from pygame.display import Info
+from image import Image
+from banner import Banner
 from buttons import CenteredRoundedTextButton, ExitButton
-from utility import *
 from events import EventHandler
+from utility import *
 
 class Menu:
 
@@ -43,9 +46,28 @@ class Menu:
         self.buttons ['exit'].addClickListener (Menu.clickExitCallback)
 
 
+
+        self.bannerImages = [
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0),
+            Image ('cheeze.png', 0,0,0,0)
+            
+        ]
+
+        self.banner = Banner (
+            50, 125, WIDTH - 100, 150, '#000000', self.bannerImages
+        )
+
     def display (self, win_surf):
         for key in self.buttons:
             self.buttons[key].draw (win_surf)
+
+        self.banner.draw (win_surf)
     
 
     # listener callbacks
