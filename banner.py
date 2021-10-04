@@ -5,9 +5,11 @@ from pygame.locals import *
 
 class Banner:
 
-    scroll_speed = 50
+    scroll_speed = 100
 
     def __init__ (self, x, y, w, h, bgcolor, items:list):
+
+        self.debug = False
 
         self.x = x
         self.y = y
@@ -15,16 +17,22 @@ class Banner:
         self.h = h
 
         self.bgColor = Color (bgcolor)
+        if not self.debug:
+            self.bgColor.a = 0
         self.clipRect = Rect (x, y, w, h)
 
         self.surface = Surface ((w, h), SRCALPHA)
 
-        self.numItems = len (items)
+        self.totalItems = len (items)
         self.totalItemWidth = 0
         self.itemMargin = 25 # px
         self.itemWidth = h // 4 * 3
         self.itemHeight = self.itemWidth
 
+        if self.totalItems * (self.itemWidth + self.itemMargin) < self.w:
+            self.calculateMargin ()
+
+        self.itemCounter = 0
         self.items = []
         for item in items:
             self.addItem (item)
@@ -37,29 +45,34 @@ class Banner:
         self.scrollItems ()
         
         for item in self.items:
-            self.surface.blit (item.surface, (item.x, item.y))
+            item.draw(self.surface)
         
         win_surface.blit (self.surface, (self.x, self.y))
 
     
 
     def addItem (self, item):
-        self.numItems += 1
         item.resize (self.itemWidth, self.itemHeight)
         centerY = self.h // 2 - item.h // 2
-        item.moveTo (self.totalItemWidth + self.itemMargin, centerY)
+        item.moveTo (self.totalItemWidth, centerY)
         self.totalItemWidth += self.itemWidth + self.itemMargin
         self.items.append (item)
-
+        self.itemCounter += 1
+        
     def scrollItems (self):
         for item in self.items:
-            item.move (Banner.scroll_speed, 0)
 
             if self.totalItemWidth < self.w:
-                if item.x > self.w:
+                if item.x + item.w > self.w:
                     item.moveTo (-item.w, item.y)
 
             else:
-                if item.x > self.totalItemWidth:
+                if item.x + item.w > self.totalItemWidth:
                     item.moveTo (-item.w, item.y)
                 
+            item.move (Banner.scroll_speed, 0)
+
+
+    def calculateMargin (self):
+        totalMarginSpace = self.w - self.totalItems * self.itemWidth
+        self.itemMargin = totalMarginSpace // self.totalItems

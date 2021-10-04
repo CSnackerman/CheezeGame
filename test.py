@@ -26,24 +26,37 @@ def test_Banner ():
     window = Window ('TEST CenteredButton')
 
     bannerItems = []
-    for i in range (10):
+    for _ in range (3):
         bannerItems.append (Image ('cheeze.png', 0,0,0,0))
 
-    banner = Banner (
+    banner1 = Banner (
         50, 50, 
         WIDTH - 100, 100,
-        '#000000', 
+        '#333333', 
         bannerItems
     )
 
-    banner.addItem (Image ('cheeze.png', 0,0,0,0))
+    bannerItems = []
+    for _ in range (7):
+        bannerItems.append (Image ('cheeze.png', 0,0,0,0))
+
+    banner2 = Banner (
+        50, 200, 
+        WIDTH - 100, 150,
+        '#333333', 
+        bannerItems
+    )
+
+
+
     
     while 1:
         Time.handleTime()
         EventHandler.pollEvents()
         window.clear()
 
-        banner.draw (window.surface)
+        banner1.draw (window.surface)
+        banner2.draw (window.surface)
 
         window.update()
 
